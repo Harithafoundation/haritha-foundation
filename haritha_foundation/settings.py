@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-v7ni-_xweb9f1evh21*)1i9k8&nwmf9^@3ug9foi7cneim_4(=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["https://haritha-foundation.onrender.com"]
+ALLOWED_HOSTS = ["https://haritha-foundation.onrender.com",]
 
 
 # Application definition
