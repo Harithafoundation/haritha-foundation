@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful</title>
+
+    <link rel="stylesheet" href="{% static 'css/payment_success.css' %}">
+</head>
+<body>
+
+<div class="success-container">
+    <div class="donation-icon">
+    ❤️
+    </div>
+    <div class="checkmark">
+        ✓
+    </div>
+
+    <h1>Payment Successful!</h1>
+
+    <p>
+        Thank you for supporting <strong>Haritha Foundation</strong>.
+        Your donation has been received successfully.
+    </p>
+    <p class="special-message">
+    🌱 Your generosity helps us educate and empower students across communities.
+</p>
+    <div class="details">
+        <p><strong>Payment ID:</strong> {{ payment_id }}</p>
+        <p><strong>Amount:</strong> ₹{{ amount }}</p>
+    </div>
+
+    <a href="{% url 'home' %}" class="home-btn">
+        Back to Home
+    </a>
+    <p class="redirect-text">
+    Redirecting to Home in 5 seconds...
+    </p>
+
+</div>
+<script>
+setTimeout(function(){
+    window.location.href="{% url 'home' %}";
+}, 5000);
+</script>
+</body>
+</html>

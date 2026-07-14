@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    .come{
+        font-size: xxx-large;
+        font-style: italic;
+        text-align: center;
+        color: red;
+        font-weight: 600;
+    }
+</style>
+<h1 class="come">
+    Donate Page will come soon!
+</h1>
+<!--
+<div class="donate-container">
+
+    <div class="donate-card">
+        <div class="donation-icon">
+            <i class="fa-solid fa-heart"></i>
+        </div>
+        <h2>Support Haritha Foundation</h2>
+
+        <p>
+            Your contribution helps students with
+            education, skill development and career opportunities.
+        </p>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="success-message">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}    
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="donate-form-group">
+                <label>Full Name</label>
+                <input type="text" name="name" required>
+            </div>
+
+            <div class="donate-form-group">
+                <label>Email</label>
+                <input type="email" name="email" required>
+            </div>
+
+            <div class="donate-form-group">
+                <label>Phone Number</label>
+                <input type="tel" name="phone" required>
+            </div>
+
+            <div class="donate-form-group">
+                <label>Address</label>
+                <textarea name="address" rows="3" placeholder="Enter your address" required></textarea>
+            </div>
+
+            <div class="donate-form-group">
+                <label>Select Project</label>
+                <select name="project" required>
+                    <option value="">
+                        Select Project
+                    </option>
+                    {% for project in projects %}
+                    <option value="{{ project.id }}">
+                        {{ project.title }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="donate-form-group">
+                <label>PAN Number (Optional) </label>
+                <input type="text" name="pan_number" placeholder="ABCDE1234F">
+            </div>
+
+            <div class="donate-form-group">
+                <label>Donation Amount (₹)</label>
+                <input type="number" id="amount" name="amount" required>
+            </div>
+
+            <div class="donate-form-group">
+                <label>Message (Optional)</label>
+                <textarea name="message" rows="4"></textarea>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="agree" required>
+                <label for="agree">
+                    I agree to the
+                    <a href="{% static 'pdfs/terms_and_conditions.pdf' %}" target="_blank">
+                        Terms & Conditions
+                    </a>
+                </label>
+            </div>
+
+            <button type="submit" class="donate-submit-btn">
+                Proceed To Donate
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+{% if payment %}
+<script>
+    var options={
+        'key':'{{ razorpay_key }}',
+        'amount':'{{ payment.amount }}',
+        'currency':'INR',
+        'name':'Haritha Foundation',
+        'description':'Donation',
+        'order_id':'{{ order_id }}',
+        'handler':function(response){
+            window.location.href='/payment-success/?payment_id=' +response.razorpay_payment_id +'&order_id=' +response.razorpay_order_id;},
+            'prefill':{
+                'name':'{{ name }}',
+                'email':'{{ email}}',
+                'contact':'{{ phone }}'},
+            'theme':{color:'#2E8B57'}
+    };
+    var rzp=new Razorpay(options);
+    rzp.open();
+</script>
+{% endif %}
+{% endblock %}

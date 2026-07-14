@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="register-container">
+
+    <div class="register-card">
+        {% if error %}
+        <div class="error-message">
+            {{ error }}
+        </div>
+        {% endif %}
+        <h2>Create Account</h2>
+        
+        <p>Join Haritha Foundation</p>
+
+        <div id="password-error" class="error-message" style="display: none;">
+            Passwords do not match
+        </div>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="register-form-group">
+                <label>Username</label>
+                <input type="text" name="username" required>
+            </div>
+
+            <div class="register-form-group">
+                <label>Email</label>
+                <input type="email" name="email" required>
+            </div>
+
+            <div class="register-form-group">
+                <label>Password</label>
+                <input type="password" id="password" name="password1" required>
+            </div>
+
+            <div class="register-form-group">
+                <label>Confirm Password</label>
+                <input type="password" id="confirm_password" name="password2" required>
+            </div>
+
+            <button type="submit" class="register-btn">
+                Register
+            </button>
+
+        </form>
+
+        <p class="login-link">
+            Already have an account?
+            <a href="/login/">Login</a>
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}

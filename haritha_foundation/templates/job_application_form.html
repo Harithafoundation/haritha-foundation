@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="form-container">
+
+    <div class="job-icon">
+        <i class="fa-solid fa-briefcase"></i>
+    </div>
+
+    <h2>Apply for {{ job.company_name }}</h2>
+
+    <div class="job-details">
+
+        <h3>Job Details</h3>
+
+        <p>
+            <strong>Company:</strong>
+            {{ job.company_name }}
+        </p>
+
+        <p>
+            <strong>Role:</strong>
+            {{ job.job_role }}
+        </p>
+
+        <p>
+            <strong>Location:</strong>
+            {{ job.location }}
+        </p>
+
+        <p>
+            <strong>Eligibility:</strong>
+            {{ job.eligibility }}
+        </p>
+
+        <p>
+            <strong>Last Date:</strong>
+            {{ job.last_date }}
+        </p>
+
+        <p>
+            <strong>Description:</strong>
+            {{ job.description }}
+        </p>
+
+    </div>
+
+    {% if success %}
+    <div class="success-message">
+        ✅ Application Submitted Successfully!
+    </div>
+    {% endif %}
+
+    <form method="POST"
+          enctype="multipart/form-data"
+          class="application-form">
+
+        {% csrf_token %}
+
+        <div class="form-group">
+
+            <label>Full Name</label>
+
+            <input
+                type="text"
+                name="full_name"
+                placeholder="Enter your full name"
+                required
+            >
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Email Address</label>
+
+            <input
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                required
+            >
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Phone Number</label>
+
+            <input
+                type="text"
+                name="phone_number"
+                placeholder="Enter your phone number"
+                required
+            >
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Upload Resume</label>
+
+            <input
+                type="file"
+                name="resume"
+                accept=".pdf,.doc,.docx"
+                required
+            >
+
+        </div>
+
+        <button type="submit" class="submit-btn">
+            Submit Application
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

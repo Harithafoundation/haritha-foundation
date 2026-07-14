@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="register-container">
+
+    <div class="register-card">
+
+        {% if error %}
+        <div class="error-message">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <h2>Login</h2>
+
+        <p>Welcome Back to Haritha Foundation</p>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>Username</label>
+                <input
+                    type="text"
+                    name="username"
+                    id="username"
+                    placeholder="Enter Username"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    placeholder="Enter Password"
+                    required>
+            </div>
+            <div class="forgot-password">
+                <a href="{% url 'password_reset' %}">
+                    Forgot Password
+                </a>
+            </div>
+            <button type="submit"
+                    class="register-btn">
+                Login
+            </button>
+
+        </form>
+
+        <div class="login-link">
+            Don't have an account?
+            <a href="/register/">
+                Register Here
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

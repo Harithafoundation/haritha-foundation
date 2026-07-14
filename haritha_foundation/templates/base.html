@@ -1,0 +1,227 @@
+{% load static %}
+
+<!DOCTYPE html><html lang="en">
+    
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="description"
+      content="Haritha Foundation Trust empowers students through education, skill development, career guidance, volunteer programs, and community support initiatives.">
+
+<meta name="keywords"
+      content="Haritha Foundation, Education, Skill Development, NGO, Trust, Students, Career Guidance, Donations, Volunteer Programs">
+
+<meta name="author"
+      content="Guru Pavan">
+
+<meta name="robots"
+      content="index, follow">
+
+<meta name="theme-color"
+      content="#0B6E4F">
+
+<title>HARITHA FOUNDATION</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+
+<body><header><nav class="navbar">
+
+    <!-- Hamburger Menu -->
+
+    <div class="menu-toggle"
+         onclick="toggleMenu()">
+        ☰
+    </div>
+
+    <!-- Logo -->
+
+    <div class="logo">
+        <div class="logo-box">
+            <img src="{% static 'images/logo.jpeg' %}" alt="Haritha Foundation Logo">
+        </div>
+        <div class="logo-text">
+            <h2>HARITHA <br>
+                FOUNDATION</h2>
+            <p>Education • Skills • Opportunities</p>
+        </div>
+    </div>
+
+    <!-- Mobile Login/Register -->
+
+    <div class="mobile-auth">
+        {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}" class="auth-btn">Logout</a>
+        {% elif request.path == '/register/' %}
+        <a href="{% url 'login' %}" class="auth-btn">Login</a>
+        {% elif request.path == '/login/' %}
+        <a href="{% url 'register' %}" class="auth-btn">Register</a>
+        {% else %}
+        <a href="{% url 'register' %}" class="auth-btn">Register</a>
+        {% endif %}
+
+    </div>
+
+
+    <!-- Desktop Menu -->
+
+    <div class="desktop-menu">
+
+        <a href="/">Home</a>
+
+        <a href="/about/">About</a>
+
+        <a href="/programs/">Programs</a>
+
+        <a href="/events/">Events</a>
+
+        <a href="/gallery/">Gallery</a>
+
+        <a href="/contact/">Contact</a>
+
+        {% if user.is_authenticated %}
+
+        <a href="{% url 'logout' %}" class="auth-btn">Logout</a>
+
+        {% elif request.path == '/register/' %}
+
+        <a href="{% url 'login' %}" class="auth-btn">Login</a>
+
+        {% elif request.path == '/login/' %}
+
+        <a href="{% url 'register' %}" class="auth-btn">Register</a>
+
+        {% else %}
+
+        <a href="{% url 'register' %}" class="auth-btn">Register</a>
+        
+        {% endif %}
+
+        <a href="/donate/" class="donate-btn">
+            Donate Now
+        </a>
+
+    </div>
+
+</nav>
+
+</header><!-- MOBILE MENU --><div class="mobile-menu"
+     id="navMenu"><a href="/">Home</a>
+
+<a href="/about/">About</a>
+
+<a href="/programs/">Programs</a>
+
+<a href="/events/">Events</a>
+
+<a href="/gallery/">Gallery</a>
+
+<a href="/contact/">Contact</a>
+
+<a href="/donate/" class="mobile-donate-btn">
+    <i class="fa-solid fa-heart"></i>
+    Donate Now
+</a>
+
+</div><!-- PAGE CONTENT -->
+<main>
+    {% block content %}
+    {% endblock %}
+
+</main>
+<!-- FOOTER --><footer><div class="footer-container">
+
+    <h3>
+        Haritha Foundation
+    </h3>
+
+    <p>
+        Empowering students and communities through education,
+        skill development, career guidance, and sustainable opportunities.
+    </p>
+    <!-- PAGE CONTENT -->
+     <div class="footer-icons">
+        <a href="mailto:harithafoundation1905@gmail.com" target="_blank"><i class="fa-solid fa-envelope"></i> </a>
+        <a href="tel:+917569574711"><i class="fa-solid fa-phone"></i> </a>
+        <a href="https://wa.me/917569574711" target="_blank"><i class="fa-brands fa-whatsapp"></i> </a>
+        <a href="https://www.linkedin.com/in/haritha-foundation-4b2278378?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank"><i class="fa-brands fa-linkedin"></i> </a>
+        <a href="https://maps.google.com/?q=Your trust location" target="_blank"><i class="fa-solid fa-location-dot"></i> </a>
+        
+     </div>
+     <hr class="footer-line">
+    <p>
+        © 2026 Haritha Foundation Trust. All Rights Reserved.
+    </p>
+</div>
+
+</footer><script src="{% static 'js/main.js' %}"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+{% block extra_js %}
+{% endblock %}
+<!-- Developer Button -->
+<button id="developerBtn" class="developer-btn">
+    🚀 About Developer
+</button>
+
+<div id="developerCard" class="developer-card">
+
+    <button class="close-btn" onclick="closeCard()">×</button>
+
+    <div class="dev-header">
+
+        <div class="dev-avatar">
+            GP
+        </div>
+
+        <h2>Guru Pavan</h2>
+
+        <span class="dev-role">
+            Satellite Testing Engineer
+        </span>
+
+        <span class="dev-role2">
+            Full Stack Developer
+        </span>
+
+    </div>
+
+    <div class="dev-body">
+
+        <div class="dev-section">
+            <h3>🚀 Project</h3>
+            <p>Haritha Foundation Website</p>
+        </div>
+
+        <div class="dev-section">
+            <h3>💻 Skills</h3>
+            <p>
+                Python • Django • PostgreSQL • HTML • CSS • JavaScript
+            </p>
+        </div>
+
+        <div class="dev-section">
+            <h3>🛰 Experience</h3>
+            <p>
+                Satellite Testing Engineer with experience in integration,
+                validation, testing and troubleshooting of spacecraft systems.
+            </p>
+        </div>
+
+        <div class="dev-section">
+            <h3>🌱 Vision</h3>
+            <p>
+                Combining Space Technology and Software Engineering to build
+                innovative solutions that create meaningful social impact.
+            </p>
+        </div>
+
+    </div>
+
+</div>
+</body></html>

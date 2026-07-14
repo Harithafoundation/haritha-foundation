@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- HERO SECTION -->
+<section class="programs-hero">
+
+    <div class="programs-overlay">
+
+        <h1>Skill Development & Career Programs</h1>
+
+        <p>
+            Haritha Foundation empowers students through quality education,
+            industry-oriented training, career guidance, and professional
+            development programs designed to build successful careers.
+        </p>
+
+    </div>
+
+</section>
+
+<!-- INTRODUCTION -->
+
+<section class="programs-intro">
+
+    <h2>What We Offer</h2>
+
+    <p class="offer">
+        Our programs are carefully designed to bridge the gap between
+        academic learning and industry requirements. Through expert
+        trainers, practical training, mentorship, and career guidance,
+        we help students become confident professionals.
+    </p>
+
+</section>
+
+<!-- PROGRAM CATEGORIES -->
+
+<section class="training-programs">
+
+    <h2>Training Programs</h2>
+
+    <div class="events-grid">
+
+        {% for program in programs %}
+
+        <div class="event-card">
+
+            <div class="event-content">
+
+                <h3>{{ program.title }}</h3>
+
+                <p>{{ program.description }}</p>
+
+                <div class="event-info">
+                    <p><strong>Duration:</strong> {{ program.duration_weeks }} Weeks</p>
+                    <p><strong>Trainer:</strong> {{ program.trainer.user.username }}</p>
+                    <p><strong>Start Date:</strong> {{ program.start_date }}</p>
+                    <p><strong>End Date:</strong> {{ program.end_date }}</p>
+                </div>
+
+                <a href="{% url 'enroll_program' program.id %}" class="register-btn">
+                    Enroll Now
+                </a>
+
+                {% if request.GET.enrolled == program.id|stringformat:'s' %}
+                <div class="enroll-success">
+                    ✅ Enrollment Successful!
+                </div>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="no-data">
+
+            <h3>No Programs Available</h3>
+
+            <p>
+                New training programs will be announced soon.
+                Stay connected with Haritha Foundation for upcoming
+                skill development programs, workshops, career guidance,
+                and learning opportunities.
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+<!-- TRAINERS SECTION -->
+
+<section class="mentor-section">
+
+    <h2>Expert Volunteer Trainers</h2>
+
+    <p>
+        Our volunteer trainers bring industry experience and practical
+        knowledge to help students achieve their career goals.
+    </p>
+
+</section>
+
+<!-- CTA -->
+
+<section class="program-cta">
+
+    <h2>Join Haritha Foundation</h2>
+
+    <p>
+        Start your journey towards knowledge, skills and career success.
+    </p>
+
+    <a href="/register/" class="hero-btn">
+        Register Today
+    </a>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="contact-hero"><div class="hero-content">
+    <h1>Get In Touch</h1>
+
+    <p>
+        We believe meaningful change begins with meaningful conversations.
+        Whether you are a student, volunteer, donor, or community partner,
+        we would love to hear from you.
+    </p>
+</div>
+
+<div class="floating-circle circle1"></div>
+<div class="floating-circle circle2"></div>
+<div class="floating-circle circle3"></div>
+
+</section><section class="contact-container"><div class="contact-info">
+
+    <div class="info-card">
+        <h3>📍 Visit Us</h3>
+        <p class="visit"> Mummy Daddy Center,Muppala Complex, <br>
+            Nellore Road, Muthoot Finanace opposite, <br>
+            first floor, Haritha Foundation,<br>
+            Pamur, Markapuram Dist <br>
+            Andhra Pradesh, 523108</p>
+    </div>
+
+    <div class="info-card">
+        <h3>📧 Email Us</h3>
+        <p class="visit">harithafoundation1905@gmail.com</p>
+    </div>
+
+    <div class="info-card">
+        <h3>📞 Call Us</h3>
+        <p class="visit">+91 7569574711</p>
+    </div>
+
+    <div class="info-card">
+        <h3>🕒 Working Hours</h3>
+        <p class="visit">Monday - Saturday<br>9:30 AM - 6:00 PM</p>
+    </div>
+
+</div>
+
+<div class="contact-form-card">
+
+    <h2>Send Us A Message</h2>
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        <input type="text" name="name" placeholder="Full Name" required>
+
+        <input type="email" name="email" placeholder="Email Address" required>
+
+        <input type="text" name="phone" placeholder="Phone Number" required>
+
+        <input type="text" name="subject" placeholder="Subject" required>
+
+        <textarea
+            name="message"
+            rows="6"
+            placeholder="Write your message here..."
+            required></textarea>
+
+        <button type="submit" class="contact-btn">
+            Send Message →
+        </button>
+
+    </form>
+
+</div>
+
+</section><section class="contact-bottom"><h2>We Value Your Feedback</h2>
+
+<p>
+    Your suggestions, ideas, and support help us improve our programs
+    and create greater impact for students and communities.
+</p>
+
+</section>{% endblock %}

@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="gallery-section">
+
+    <div class="gallery-header">
+
+        <h1>Haritha Foundation Gallery</h1>
+
+        <p>
+            Explore our workshops, career guidance programs,
+            job drives, volunteer training sessions,
+            student success stories and foundation activities.
+        </p>
+
+    </div>
+
+    {% for gallery in galleries %}
+
+    <div class="gallery-category">
+
+        <h2>{{ gallery.title }}</h2>
+
+        <p class="gallery-description">
+
+            {{ gallery.description }}
+
+        </p>
+
+        <!-- PHOTO SECTION -->
+
+        <div class="preview-container">
+
+            <h3>Photos</h3>
+
+            <div id="photo-preview-{{ gallery.id }}">
+
+                {% if gallery.first_image %}
+
+                <img
+                    src="{{ gallery.first_image }}"
+                    class="main-photo"
+                    onclick="openModal(this.src)"
+                >
+
+                {% endif %}
+
+            </div>
+
+            <div class="thumb-container">
+
+                {% for media in gallery.media.all %}
+
+                    {% if media.image %}
+
+                    <button
+                        class="thumb-btn"
+                        onclick="changePhoto(
+                        'photo-preview-{{ gallery.id }}',
+                        '{{ media.image.url }}'
+                        )"
+                    >
+                        P{{ forloop.counter }}
+                    </button>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+        <!-- VIDEO SECTION -->
+
+        <div class="preview-container">
+
+            <h3>Videos</h3>
+
+            <video
+                id="video-preview-{{ gallery.id }}"
+                controls
+                class="main-video"
+            >
+
+                {% if gallery.first_video %}
+                <source src="{{ gallery.first_video }}">
+                {% endif %}
+
+            </video>
+
+            <div class="thumb-container">
+
+                {% for media in gallery.media.all %}
+
+                    {% if media.video %}
+
+                    <button
+                        class="thumb-btn"
+                        onclick="changeVideo(
+                        'video-preview-{{ gallery.id }}',
+                        '{{ media.video.url }}'
+                        )"
+                    >
+                        V{{ forloop.counter }}
+                    </button>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</section>
+
+<!-- IMAGE POPUP -->
+
+<div id="imageModal" class="image-modal">
+
+    <span
+        class="close-modal"
+        onclick="closeModal()"
+    >
+        &times;
+    </span>
+
+    <img
+        id="modalImage"
+        class="modal-image"
+    >
+
+</div>
+
+<script>
+
+function changePhoto(id,imageUrl){
+
+    document.getElementById(id).innerHTML =
+
+    `<img
+        src="${imageUrl}"
+        class="main-photo"
+        onclick="openModal('${imageUrl}')"
+    >`;
+
+}
+
+function changeVideo(id,videoUrl){
+
+    const video =
+        document.getElementById(id);
+
+    video.querySelector("source").src =
+        videoUrl;
+
+    video.load();
+
+}
+
+function openModal(imageUrl){
+
+    document.getElementById(
+        "imageModal"
+    ).style.display = "block";
+
+    document.getElementById(
+        "modalImage"
+    ).src = imageUrl;
+
+}
+
+function closeModal(){
+
+    document.getElementById(
+        "imageModal"
+    ).style.display = "none";
+
+}
+
+window.onclick = function(event){
+
+    const modal =
+        document.getElementById(
+            "imageModal"
+        );
+
+    if(event.target === modal){
+
+        closeModal();
+
+    }
+
+}
+
+</script>
+
+{% endblock %}

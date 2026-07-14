@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+
+<section class="events-hero">
+    <div class="events-overlay">
+        <h1>Haritha Foundation Events</h1>
+        <p>
+            Participate in workshops, training sessions, career guidance
+            programs, awareness programs and job opportunities organized
+            by Haritha Foundation.
+        </p>
+    </div>
+</section>
+
+<section class="events-container">
+
+    <h2>Upcoming Events</h2>
+
+    <div class="events-grid">
+
+        {% for event in events %}
+
+        <div class="event-card">
+
+            {% if event.image %}
+            <img src="{{ event.image.url }}" alt="{{ event.title }}">
+            {% endif %}
+
+            <div class="event-content">
+
+                <span class="event-type">
+                    {{ event.event_type }}
+                </span>
+
+                <h3>{{ event.title }}</h3>
+
+                <p>{{ event.description }}</p>
+
+                <p>
+                    <strong>Date:</strong>
+                    {{ event.event_date }}
+                </p>
+
+                <p>
+                    <strong>Location:</strong>
+                    {{ event.location }}
+                </p>
+
+                <a href="{% url 'register_event' event.id %}" class="register-btn">
+                    Register Event
+                </a>
+
+                {% if request.GET.registered == event.id|stringformat:'s' %}
+                <div class="event-success">
+                    ✅ Event Registration Successful!
+                </div>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="no-data">
+
+            <h3>No Events Available</h3>
+
+            <p>
+                New events will be announced soon.
+                Stay connected with Haritha Foundation for upcoming workshops,
+                training programs, career guidance sessions, and community initiatives.
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+<section class="job-drives-section">
+
+    <h2>Job Opportunities & Placement Drives</h2>
+
+    <div class="job-grid">
+
+        {% for job in jobs %}
+
+        <div class="job-card">
+
+            {% if job.company_logo %}
+            <img src="{{ job.company_logo.url }}" alt="{{ job.company_name }}">
+            {% endif %}
+
+            <div class="job-content">
+
+                <h3>{{ job.company_name }}</h3>
+
+                <p>
+                    <strong>Role:</strong>
+                    {{ job.job_role }}
+                </p>
+
+                <p>
+                    <strong>Location:</strong>
+                    {{ job.location }}
+                </p>
+
+                <p>
+                    <strong>Eligibility:</strong>
+                    {{ job.eligibility }}
+                </p>
+
+                <p>
+                    <strong>Last Date:</strong>
+                    {{ job.last_date }}
+                </p>
+
+                <p>
+                    {{ job.description }}
+                </p>
+
+                <a href="{% url 'apply_job' job.id %}" class="apply-btn">
+                    Apply Now
+                </a>
+                {% if request.GET.applied == job.id|stringformat:'s' %}
+                <div class="job-success">
+                  ✅ Application Submitted Successfully!
+                </div>
+                {% endif %}
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="no-events">
+
+            <h3>No Job Drives Available</h3>
+
+            <p>
+                New placement opportunities will be announced soon.
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+<section class="events-bottom">
+
+    <h2>Why Participate?</h2>
+
+    <p>
+        Our events help students gain practical skills, improve
+        communication abilities, prepare for interviews, explore
+        career opportunities and connect with industry professionals.
+    </p>
+
+</section>
+
+{% endblock %}
