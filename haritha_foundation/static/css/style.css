@@ -3842,3 +3842,33 @@ input[type="file"]{
 }
 /* tha above one is login page
 
+
+
+/* MOBILE FIX */
+@media (max-width:768px){
+
+    /* Register button */
+    .mobile-auth .auth-btn{
+        padding:8px 12px !important;
+        font-size:13px !important;
+        height:40px !important;
+        line-height:24px !important;
+        border-radius:20px !important;
+    }
+
+    /* Footer icons in one line */
+    .footer-icons{
+        display:flex !important;
+        justify-content:center !important;
+        flex-wrap:nowrap !important;
+        gap:8px !important;
+        overflow-x:auto;
+    }
+
+    .footer-icons a{
+        width:45px !important;
+        height:45px !important;
+        font-size:18px !important;
+        flex-shrink:0;
+    }
+}
