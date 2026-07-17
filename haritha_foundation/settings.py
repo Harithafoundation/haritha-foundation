@@ -26,7 +26,13 @@ SECRET_KEY = 'django-insecure-v7ni-_xweb9f1evh21*)1i9k8&nwmf9^@3ug9foi7cneim_4(=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["haritha-foundation.onrender.com"]
+CSRF_TRUSTED_ORIGINS=[
+    "https://haritha-foundation.onrender.com",
+]
+
+ALLOWED_HOSTS = [
+    "haritha-foundation.onrender.com",
+]
 
 
 # Application definition
@@ -90,10 +96,11 @@ WSGI_APPLICATION = 'haritha_foundation.wsgi.application'
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(
+   'default': dj_database_url.config(
         default=os.environ.get("DATABASE_URL")
     )
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -141,8 +148,8 @@ MEDIA_URL='/media/'
 MEDIA_ROOT=BASE_DIR / 'media'
 LOGIN_URL='/login/'
 
-#RAZORPAY_KEY_ID="rzp_test_T685deq4zmzwCv"
-#RAZORPAY_KEY_SECRET="pmG1oJdnBA7KIE7NfWybPHeI"
+RAZORPAY_KEY_ID="rzp_test_T685deq4zmzwCv"
+RAZORPAY_KEY_SECRET="pmG1oJdnBA7KIE7NfWybPHeI"
 
 EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST='smtp.gmail.com'

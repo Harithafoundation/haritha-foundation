@@ -75,45 +75,59 @@
 
         <!-- VIDEO SECTION -->
 
-        <div class="preview-container">
+        <!-- VIDEO SECTION -->
 
-            <h3>Videos</h3>
+<div class="preview-container">
 
-            <video
-                id="video-preview-{{ gallery.id }}"
-                controls
-                class="main-video"
+    <h3>Videos</h3>
+
+    <div class="video-wrapper">
+
+        <video
+            id="video-preview-{{ gallery.id }}"
+            class="main-video"
+            controls
+            preload="metadata"
+            controlsList="nodownload"
+        >
+
+            {% if gallery.first_video %}
+            <source
+                src="{{ gallery.first_video }}"
+                type="video/mp4"
             >
+            {% endif %}
 
-                {% if gallery.first_video %}
-                <source src="{{ gallery.first_video }}">
-                {% endif %}
+            Your browser does not support video playback.
 
-            </video>
+        </video>
 
-            <div class="thumb-container">
+    </div>
 
-                {% for media in gallery.media.all %}
+    <div class="thumb-container">
 
-                    {% if media.video %}
+        {% for media in gallery.media.all %}
 
-                    <button
-                        class="thumb-btn"
-                        onclick="changeVideo(
-                        'video-preview-{{ gallery.id }}',
-                        '{{ media.video.url }}'
-                        )"
-                    >
-                        V{{ forloop.counter }}
-                    </button>
+            {% if media.video %}
 
-                    {% endif %}
+            <button
+                type="button"
+                class="thumb-btn"
+                onclick="changeVideo(
+                    'video-preview-{{ gallery.id }}',
+                    '{{ media.video.url }}'
+                )"
+            >
+                Video {{ forloop.counter }}
+            </button>
 
-                {% endfor %}
+            {% endif %}
 
-            </div>
+        {% endfor %}
 
-        </div>
+    </div>
+
+</div>
 
     </div>
 
@@ -153,15 +167,22 @@ function changePhoto(id,imageUrl){
 
 }
 
-function changeVideo(id,videoUrl){
+function changeVideo(videoId, videoUrl){
 
-    const video =
-        document.getElementById(id);
+    const currentVideo =
+        document.getElementById(videoId);
 
-    video.querySelector("source").src =
-        videoUrl;
+    currentVideo.pause();
 
-    video.load();
+    currentVideo.innerHTML =
+        `<source src="${videoUrl}" type="video/mp4">`;
+
+    currentVideo.load();
+
+    currentVideo.play()
+        .catch(error => {
+            console.log(error);
+        });
 
 }
 

@@ -3,19 +3,14 @@
 
 {% block content %}
 
-<style>
-    .come{
-        font-size: xxx-large;
-        font-style: italic;
-        text-align: center;
-        color: red;
-        font-weight: 600;
+<script>
+    function comingSoon(){
+        alert(
+            "Thank you for your interest in supporting Haritha Foundation.\n\nOnline donations will be enabled shortly"
+        )
     }
-</style>
-<h1 class="come">
-    Donate Page will come soon!
-</h1>
-<!--
+</script>
+
 <div class="donate-container">
 
     <div class="donate-card">
@@ -97,7 +92,10 @@
                 </label>
             </div>
 
-            <button type="submit" class="donate-submit-btn">
+            <!--<button type="submit" class="donate-submit-btn">
+                Proceed To Donate
+            </button> -->
+            <button type="button" class="donate-submit-btn" onclick="comingSoon()">
                 Proceed To Donate
             </button>
 
@@ -109,6 +107,9 @@
 
 {% endblock %}
 
+
+
+{% comment %}
 {% block extra_js %}
 {% if payment %}
 <script>
@@ -132,3 +133,4 @@
 </script>
 {% endif %}
 {% endblock %}
+{% endcomment %}
