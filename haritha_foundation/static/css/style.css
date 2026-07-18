@@ -421,8 +421,6 @@ footer{
 
     color:white;
 
-    font-size:40px;
-
     backdrop-filter:
     blur(10px);
 
@@ -756,9 +754,9 @@ footer{
         translateY(-50%);
 
     }
-    .auth-btn{
-        padding: 10px 12px;
-        font-size: 14px;
+    .auth-btn .mobile-auth{
+        padding: 8px 12px;
+        font-size: 13px;
     }
 
     .logo{
