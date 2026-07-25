@@ -254,8 +254,8 @@ Haritha Foundation"""
 
             return redirect("verify_otp")
 
-        except User.DoesNotExist:
-            messages.error(request, "No account found with this email.")
+        except Exception as e:
+            messages.error(request, f"Email Error: {e}")
 
     return render(request, "forgot_password.html")
 
