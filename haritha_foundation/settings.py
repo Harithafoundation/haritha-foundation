@@ -35,7 +35,10 @@ CSRF_TRUSTED_ORIGINS=[
 ]
 
 ALLOWED_HOSTS = [
-    "haritha-foundation.onrender.com",
+   # "haritha-foundation.onrender.com",
+   "200.141.4.149.",
+   "localhost",
+   "127.0.0.1",
 ]
 
 
