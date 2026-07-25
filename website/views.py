@@ -4,16 +4,14 @@ from django.contrib.auth import get_user_model,authenticate,login,logout
 from django.contrib import messages
 from donations.models import *
 from education.models import *
-from core.models import *
-from accounts.models import *
-from django.contrib.auth.models import User
-from django.contrib import messages
-from django.core.mail import send_mail
-from django.conf import settings
-from django.utils import timezone
 from random import randint
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from accounts.models import *
+from core.models import *
 import os
-import resend
 from .utils import create_receipt
 import razorpay
 from django.conf import settings
@@ -209,85 +207,95 @@ def logout_view(request):
     logout(request)
     messages.success(request,'Logged out Successfully')
     return redirect('home')
-    
 
-
-# Make sure to keep your existing User and PasswordResetOTP imports!
-
-# 1. Authenticate Resend using the key from settings.py
-resend.api_key = settings.RESEND_API_KEY
 
 def forgot_password(request):
     if request.method == "POST":
         email = request.POST.get("email")
 
-        # First, check if the user exists safely
         try:
             user = User.objects.get(email=email)
-        except User.DoesNotExist:
-            messages.error(request, "No account found with this email.")
-            return render(request, "forgot_password.html")
 
-        # If user exists, do the OTP and Email logic
-        try:
+            # Delete previous OTPs
             PasswordResetOTP.objects.filter(user=user).delete()
-            otp = str(randint(100000, 999999))
-            PasswordResetOTP.objects.create(user=user, otp=otp)
 
-            # 2. Send Email using Resend API (Replaced send_mail)
-            params = {
-                "from": settings.DEFAULT_FROM_EMAIL, # This uses onboarding@resend.dev
-                "to": [email], 
-                "reply_to": "harithafoundationtrust@gmail.com", # Replies go straight to your Gmail!
-                "subject": "Password Reset OTP",
-                "html": f"""
-                    <p>Hello {user.first_name or user.username},</p>
-                    <p>Your OTP for resetting your password is: <strong>{otp}</strong></p>
-                    <p>This OTP is valid for 10 minutes.</p>
-                    <p>If you did not request this, please ignore this email.</p>
-                    <br>
-                    <p><strong>Haritha Foundation</strong></p>
-                """
-            }
-            
-            # This triggers the API call
-            email_response = resend.Emails.send(params)
+            # Generate new OTP
+            otp = str(randint(100000, 999999))
+
+            PasswordResetOTP.objects.create(
+                user=user,
+                otp=otp
+            )
+
+            # Send email
+            subject = "Haritha Foundation - Password Reset OTP"
+
+            message = f"""
+Hello {user.first_name or user.username},
+
+Your OTP for resetting your password is:
+
+{otp}
+
+This OTP is valid for 10 minutes.
+
+If you did not request a password reset, please ignore this email.
+
+Regards,
+Haritha Foundation
+"""
+
+            send_mail(
+                subject,
+                message,
+                settings.DEFAULT_FROM_EMAIL,
+                [email],
+                fail_silently=False,
+            )
 
             request.session["reset_email"] = email
+
+            messages.success(request, "OTP has been sent to your email.")
+
             return redirect("verify_otp")
 
-        # 3. Catch the EXACT email error for the API
+        except User.DoesNotExist:
+            messages.error(request, "No account found with this email.")
+
         except Exception as e:
-            messages.error(request, f"API Email Error: {e}") 
-            print(f"CRITICAL API ERROR: {e}") 
+            messages.error(request, f"Email Error: {str(e)}")
 
     return render(request, "forgot_password.html")
-
-
 
 def verify_otp(request):
     email = request.session.get("reset_email")
 
     if not email:
-        messages.error(request, "Session expired. Please try again.")
+        messages.error(request, "Password reset session expired.")
+        return redirect("forgot_password")
+
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        messages.error(request, "User not found.")
         return redirect("forgot_password")
 
     if request.method == "POST":
-        otp = request.POST.get("otp")
+        entered_otp = request.POST.get("otp")
 
         try:
-            otp_record = PasswordResetOTP.objects.get(
-                user__email=email,
-                otp=otp,
-                is_verified=False
+            otp_obj = PasswordResetOTP.objects.get(
+                user=user,
+                otp=entered_otp
             )
 
-            if timezone.now() > otp_record.expires_at:
+            if timezone.now() > otp_obj.expires_at:
+                otp_obj.delete()
                 messages.error(request, "OTP has expired.")
                 return redirect("forgot_password")
 
-            otp_record.is_verified = True
-            otp_record.save()
+            otp_obj.is_verified = True
+            otp_obj.save()
 
             return redirect("reset_password")
 
@@ -296,21 +304,29 @@ def verify_otp(request):
 
     return render(request, "verify_otp.html")
 
+
 def reset_password(request):
     email = request.session.get("reset_email")
 
     if not email:
-        messages.error(request, "Session expired. Please try again.")
+        messages.error(request, "Password reset session expired.")
         return redirect("forgot_password")
 
     try:
-        otp_record = PasswordResetOTP.objects.get(
-            user__email=email,
+        user = User.objects.get(email=email)
+
+        otp_obj = PasswordResetOTP.objects.filter(
+            user=user,
             is_verified=True
-        )
-    except PasswordResetOTP.DoesNotExist:
-        messages.error(request, "Please verify your OTP first.")
-        return redirect("verify_otp")
+        ).last()
+
+        if not otp_obj:
+            messages.error(request, "Please verify your OTP first.")
+            return redirect("verify_otp")
+
+    except User.DoesNotExist:
+        messages.error(request, "User not found.")
+        return redirect("forgot_password")
 
     if request.method == "POST":
         password = request.POST.get("password")
@@ -320,20 +336,14 @@ def reset_password(request):
             messages.error(request, "Passwords do not match.")
             return render(request, "reset_password.html")
 
-        user = User.objects.get(email=email)
-
-        # Update password
         user.set_password(password)
         user.save()
 
-        # Delete all OTP records for this user
         PasswordResetOTP.objects.filter(user=user).delete()
 
-        # Remove session
-        if "reset_email" in request.session:
-            del request.session["reset_email"]
+        request.session.pop("reset_email", None)
 
-        messages.success(request, "Your password has been reset successfully.")
+        messages.success(request, "Password reset successful. Please login.")
         return redirect("login")
 
     return render(request, "reset_password.html")
