@@ -210,23 +210,28 @@ def logout_view(request):
     return redirect('home')
     
 
+from django.core.mail import send_mail
+from django.contrib import messages
+from django.shortcuts import render, redirect
+import smtplib # Added to catch specific SMTP errors
+
 def forgot_password(request):
     if request.method == "POST":
         email = request.POST.get("email")
 
+        # 1. First, check if the user exists safely
         try:
             user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            messages.error(request, "No account found with this email.")
+            return render(request, "forgot_password.html")
 
-            # Delete old OTPs
+        # 2. If user exists, do the OTP and Email logic
+        try:
             PasswordResetOTP.objects.filter(user=user).delete()
-
-            # Generate a 6-digit OTP
             otp = str(randint(100000, 999999))
+            PasswordResetOTP.objects.create(user=user, otp=otp)
 
-            # Save OTP
-            PasswordResetOTP.objects.create(user=user,otp=otp)
-
-            # Send Email
             subject = "Password Reset OTP"
             message = f"""
 Hello {user.first_name or user.username},
@@ -249,13 +254,15 @@ Haritha Foundation"""
                 fail_silently=False,
             )
 
-            # Save email in session
             request.session["reset_email"] = email
-
             return redirect("verify_otp")
 
+        # 3. Catch the EXACT email error
+        except smtplib.SMTPAuthenticationError:
+            messages.error(request, "SMTP Auth Error: Your email password or App Password is wrong in Render.")
         except Exception as e:
-            messages.error(request, f"Email Error: {e}")
+            messages.error(request, f"Real Email Error: {e}") 
+            print(f"CRITICAL EMAIL ERROR: {e}") # This forces it into your Render logs
 
     return render(request, "forgot_password.html")
 
