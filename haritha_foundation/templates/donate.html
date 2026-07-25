@@ -3,13 +3,13 @@
 
 {% block content %}
 
-<script>
+<!-- <script>
     function comingSoon(){
         alert(
             "Thank you for your interest in supporting Haritha Foundation.\n\nOnline donations will be enabled shortly"
         )
     }
-</script>
+</script>-->
 
 <div class="donate-container">
 
@@ -92,12 +92,12 @@
                 </label>
             </div>
 
-            <!--<button type="submit" class="donate-submit-btn">
+            <button type="submit" class="donate-submit-btn">
                 Proceed To Donate
-            </button> -->
-            <button type="button" class="donate-submit-btn" onclick="comingSoon()">
+            </button> 
+            <!--<button type="button" class="donate-submit-btn" onclick="comingSoon()">
                 Proceed To Donate
-            </button>
+            </button>-->
 
         </form>
 
@@ -109,7 +109,7 @@
 
 
 
-{% comment %}
+
 {% block extra_js %}
 {% if payment %}
 <script>
@@ -133,4 +133,3 @@
 </script>
 {% endif %}
 {% endblock %}
-{% endcomment %}
