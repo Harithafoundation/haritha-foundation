@@ -5,6 +5,13 @@ from django.contrib import messages
 from donations.models import *
 from education.models import *
 from core.models import *
+from accounts.models import *
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.core.mail import send_mail
+from django.conf import settings
+from django.utils import timezone
+from random import randint
 import os
 from .utils import create_receipt
 import razorpay
@@ -203,3 +210,126 @@ def logout_view(request):
     return redirect('home')
     
 
+def forgot_password(request):
+    if request.method == "POST":
+        email = request.POST.get("email")
+
+        try:
+            user = User.objects.get(email=email)
+
+            # Delete old OTPs
+            PasswordResetOTP.objects.filter(user=user).delete()
+
+            # Generate a 6-digit OTP
+            otp = str(randint(100000, 999999))
+
+            # Save OTP
+            PasswordResetOTP.objects.create(user=user,otp=otp)
+
+            # Send Email
+            subject = "Password Reset OTP"
+            message = f"""
+Hello {user.first_name or user.username},
+
+Your OTP for resetting your password is:
+
+{otp}
+
+This OTP is valid for 10 minutes.
+
+If you did not request this, please ignore this email.
+
+Haritha Foundation"""
+
+            send_mail(
+                subject,
+                message,
+                settings.DEFAULT_FROM_EMAIL,
+                [email],
+                fail_silently=False,
+            )
+
+            # Save email in session
+            request.session["reset_email"] = email
+
+            return redirect("verify_otp")
+
+        except User.DoesNotExist:
+            messages.error(request, "No account found with this email.")
+
+    return render(request, "forgot_password.html")
+
+
+
+def verify_otp(request):
+    email = request.session.get("reset_email")
+
+    if not email:
+        messages.error(request, "Session expired. Please try again.")
+        return redirect("forgot_password")
+
+    if request.method == "POST":
+        otp = request.POST.get("otp")
+
+        try:
+            otp_record = PasswordResetOTP.objects.get(
+                user__email=email,
+                otp=otp,
+                is_verified=False
+            )
+
+            if timezone.now() > otp_record.expires_at:
+                messages.error(request, "OTP has expired.")
+                return redirect("forgot_password")
+
+            otp_record.is_verified = True
+            otp_record.save()
+
+            return redirect("reset_password")
+
+        except PasswordResetOTP.DoesNotExist:
+            messages.error(request, "Invalid OTP.")
+
+    return render(request, "verify_otp.html")
+
+def reset_password(request):
+    email = request.session.get("reset_email")
+
+    if not email:
+        messages.error(request, "Session expired. Please try again.")
+        return redirect("forgot_password")
+
+    try:
+        otp_record = PasswordResetOTP.objects.get(
+            user__email=email,
+            is_verified=True
+        )
+    except PasswordResetOTP.DoesNotExist:
+        messages.error(request, "Please verify your OTP first.")
+        return redirect("verify_otp")
+
+    if request.method == "POST":
+        password = request.POST.get("password")
+        confirm_password = request.POST.get("confirm_password")
+
+        if password != confirm_password:
+            messages.error(request, "Passwords do not match.")
+            return render(request, "reset_password.html")
+
+        user = User.objects.get(email=email)
+
+        # Update password
+        user.set_password(password)
+        user.save()
+
+        # Delete all OTP records for this user
+        PasswordResetOTP.objects.filter(user=user).delete()
+
+        # Remove session
+        if "reset_email" in request.session:
+            del request.session["reset_email"]
+
+        messages.success(request, "Your password has been reset successfully.")
+        return redirect("login")
+
+    return render(request, "reset_password.html")

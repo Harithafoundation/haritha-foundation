@@ -1,0 +1,175 @@
+/* ---------- Auth Pages ---------- */
+
+.fp-section{
+    min-height:80vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:50px 20px;
+    background:#f5f8f7;
+}
+
+.fp-card{
+    width:100%;
+    max-width:500px;
+    background:#fff;
+    border-radius:18px;
+    padding:40px;
+    box-shadow:0 10px 35px rgba(0,0,0,.08);
+    animation:fadeIn .5s ease;
+}
+
+.fp-header{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.fp-icon-circle{
+    width:65px;
+    height:65px;
+    margin:auto;
+    border-radius:50%;
+    background:#198754;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#fff;
+    font-size:24px;
+    margin-bottom:20px;
+}
+
+.fp-header h2{
+    font-size:30px;
+    color:#198754;
+    margin-bottom:10px;
+}
+
+.fp-header p{
+    color:#666;
+    line-height:1.7;
+}
+
+.fp-input-group{
+    margin-bottom:25px;
+}
+
+.fp-input-group label{
+    display:block;
+    font-weight:600;
+    margin-bottom:8px;
+}
+
+.fp-input-box{
+    position:relative;
+}
+
+.fp-input-box i{
+    position:absolute;
+    left:15px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#198754;
+}
+
+.fp-input-box input{
+    width:100%;
+    padding:14px 15px 14px 45px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    outline:none;
+    transition:.3s;
+    font-size:16px;
+}
+
+.fp-input-box input:focus{
+    border-color:#198754;
+    box-shadow:0 0 8px rgba(25,135,84,.25);
+}
+
+.fp-btn{
+    width:100%;
+    background:#198754;
+    color:#fff;
+    border:none;
+    padding:15px;
+    border-radius:10px;
+    font-size:17px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.fp-btn:hover{
+    background:#146c43;
+}
+
+.fp-btn i{
+    margin-right:8px;
+}
+
+.fp-footer{
+    margin-top:25px;
+    text-align:center;
+    
+}
+.fp-footer p{
+    font-display: block;
+    color: black;
+}
+
+.fp-footer a{
+    text-decoration:none;
+    color:#198754;
+    font-weight:600;
+}
+
+.fp-alert{
+    padding:12px;
+    border-radius:8px;
+    margin-bottom:20px;
+}
+
+.fp-alert.success{
+    background:#d1e7dd;
+    color:#0f5132;
+}
+
+.fp-alert.error{
+    background:#f8d7da;
+    color:#842029;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@media(max-width:576px){
+
+.fp-card{
+    padding:30px 20px;
+}
+
+.fp-header h2{
+    font-size:24px;
+}
+
+.icon-circle{
+    width:65px;
+    height:65px;
+    font-size:24px;
+}
+
+}
+
+.fp-input-box input[name="otp"]{
+    text-align: center;
+    font-size: 22px;
+    letter-spacing: 8px;
+    font-weight: 600;
+}

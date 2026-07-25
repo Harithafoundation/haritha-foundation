@@ -27,6 +27,7 @@ SECRET_KEY = 'django-insecure-v7ni-_xweb9f1evh21*)1i9k8&nwmf9^@3ug9foi7cneim_4(=
 DEBUG = False
 
 CSRF_TRUSTED_ORIGINS=[
+    
     "https://haritha-foundation.onrender.com",
 ]
 
@@ -98,8 +99,13 @@ WSGI_APPLICATION = 'haritha_foundation.wsgi.application'
 DATABASES = {
    'default': dj_database_url.config(
         default=os.environ.get("DATABASE_URL")
-    )
-}
+    )}
+
+#DATABASES = {
+ #   'default': {
+  #      'ENGINE': 'django.db.backends.sqlite3',
+   #     'NAME': BASE_DIR / 'db.sqlite3',
+   # }}
 
 
 # Password validation
@@ -159,6 +165,8 @@ EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_TIMEOUT = 30
+
+
 
 JAZZMIN_SETTINGS={
     'site_title':'Haritha Foundation Admin',
