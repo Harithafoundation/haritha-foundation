@@ -13,6 +13,7 @@ from django.conf import settings
 from django.utils import timezone
 from random import randint
 import os
+import resend
 from .utils import create_receipt
 import razorpay
 from django.conf import settings
@@ -210,59 +211,55 @@ def logout_view(request):
     return redirect('home')
     
 
-from django.core.mail import send_mail
-from django.contrib import messages
-from django.shortcuts import render, redirect
-import smtplib # Added to catch specific SMTP errors
+
+# Make sure to keep your existing User and PasswordResetOTP imports!
+
+# 1. Authenticate Resend using the key from settings.py
+resend.api_key = settings.RESEND_API_KEY
 
 def forgot_password(request):
     if request.method == "POST":
         email = request.POST.get("email")
 
-        # 1. First, check if the user exists safely
+        # First, check if the user exists safely
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
             messages.error(request, "No account found with this email.")
             return render(request, "forgot_password.html")
 
-        # 2. If user exists, do the OTP and Email logic
+        # If user exists, do the OTP and Email logic
         try:
             PasswordResetOTP.objects.filter(user=user).delete()
             otp = str(randint(100000, 999999))
             PasswordResetOTP.objects.create(user=user, otp=otp)
 
-            subject = "Password Reset OTP"
-            message = f"""
-Hello {user.first_name or user.username},
-
-Your OTP for resetting your password is:
-
-{otp}
-
-This OTP is valid for 10 minutes.
-
-If you did not request this, please ignore this email.
-
-Haritha Foundation"""
-
-            send_mail(
-                subject,
-                message,
-                settings.DEFAULT_FROM_EMAIL,
-                [email],
-                fail_silently=False,
-            )
+            # 2. Send Email using Resend API (Replaced send_mail)
+            params = {
+                "from": settings.DEFAULT_FROM_EMAIL, # This uses onboarding@resend.dev
+                "to": [email], 
+                "reply_to": "harithafoundationtrust@gmail.com", # Replies go straight to your Gmail!
+                "subject": "Password Reset OTP",
+                "html": f"""
+                    <p>Hello {user.first_name or user.username},</p>
+                    <p>Your OTP for resetting your password is: <strong>{otp}</strong></p>
+                    <p>This OTP is valid for 10 minutes.</p>
+                    <p>If you did not request this, please ignore this email.</p>
+                    <br>
+                    <p><strong>Haritha Foundation</strong></p>
+                """
+            }
+            
+            # This triggers the API call
+            email_response = resend.Emails.send(params)
 
             request.session["reset_email"] = email
             return redirect("verify_otp")
 
-        # 3. Catch the EXACT email error
-        except smtplib.SMTPAuthenticationError:
-            messages.error(request, "SMTP Auth Error: Your email password or App Password is wrong in Render.")
+        # 3. Catch the EXACT email error for the API
         except Exception as e:
-            messages.error(request, f"Real Email Error: {e}") 
-            print(f"CRITICAL EMAIL ERROR: {e}") # This forces it into your Render logs
+            messages.error(request, f"API Email Error: {e}") 
+            print(f"CRITICAL API ERROR: {e}") 
 
     return render(request, "forgot_password.html")
 
