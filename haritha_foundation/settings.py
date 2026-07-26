@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'core',
     'rest_framework',
     'django_filters',
+    'django.contrib.sitemaps',
 ]
 AUTH_USER_MODEL='accounts.User'
 

@@ -19,6 +19,13 @@ from django.urls import path,include
 from rest_framework_simplejwt.views import (TokenObtainPairView,TokenRefreshView,)
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.sitemaps.views import sitemap
+from website.sitemaps import StaticViewSitemap
+
+sitemaps = {
+    'static': StaticViewSitemap,
+}
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/accounts/',include('accounts.urls')),
@@ -30,6 +37,7 @@ urlpatterns = [
     path('',include('website.urls')),
     path('education/',include('education.urls')),
     path('core/',include('core.urls')),
+    path('sitemap.xml',sitemap,{'sitemaps': sitemaps},name='django.contrib.sitemaps.views.sitemap'),
 
 ]
 urlpatterns +=static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
