@@ -31,12 +31,15 @@ DEBUG = False
 
 CSRF_TRUSTED_ORIGINS=[
     
-    "https://haritha-foundation.onrender.com",
+    "https://harithafoundationtrust.com",
+    "https://www.harithafoundationtrust.com",
 ]
 
 ALLOWED_HOSTS = [
-   # "haritha-foundation.onrender.com",
    "200.141.4.149",
+   "harithafoundationtrust.com",
+
+   "www.harithafoundationtrust.com",
    "localhost",
    "127.0.0.1",
 ]
@@ -172,6 +175,7 @@ EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_TIMEOUT = 30
+
 
 
 
