@@ -3837,74 +3837,105 @@ input[type="file"]{
 }
 /* tha above one is login page*/
 
-.registerotp-box{
+.pf-otp-container{
+    width:100%;
+    min-height:80vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    box-sizing:border-box;
+}
+
+.pf-otp-card{
     width:100%;
     max-width:420px;
     background:#ffffff;
-    padding:30px;
+    padding:35px;
     border-radius:12px;
-    box-shadow:0 10px 25px rgba(0,0,0,0.15);
-    text-align: center;
+    box-shadow:0 8px 25px rgba(0,0,0,0.15);
 }
 
-.registerotp-title{
+.pf-otp-title{
     text-align:center;
-    margin-bottom:15px;
+    font-size:28px;
+    font-weight:700;
     color:#222;
+    margin-bottom:15px;
 }
 
-.registerotp-text{
+.pf-otp-text{
     text-align:center;
     color:#666;
-    margin-bottom:20px;
+    font-size:15px;
     line-height:1.6;
+    margin-bottom:25px;
 }
 
-.registerotp-group{
+.pf-otp-group{
     margin-bottom:20px;
 }
 
-.registerotp-label{
+.pf-otp-label{
     display:block;
-    margin-bottom:8px;
     font-weight:600;
+    margin-bottom:8px;
+    color:#333;
 }
 
-.registerotp-input{
+.pf-otp-input{
     width:100%;
-    padding:12px;
+    height:48px;
+    padding:0 15px;
     border:1px solid #ccc;
     border-radius:8px;
     font-size:16px;
     outline:none;
+    transition:0.3s;
+    box-sizing:border-box;
 }
 
-.registerotp-input:focus{
+.pf-otp-input:focus{
     border-color:#28a745;
+    box-shadow:0 0 5px rgba(40,167,69,.3);
 }
 
-.registerotp-button{
+.pf-otp-btn{
     width:100%;
-    padding:12px;
+    height:48px;
     background:#28a745;
     color:#fff;
     border:none;
     border-radius:8px;
     font-size:16px;
+    font-weight:600;
     cursor:pointer;
+    transition:0.3s;
 }
 
-.registerotp-button:hover{
+.pf-otp-btn:hover{
     background:#218838;
 }
 
-.registerotp-error{
+.pf-otp-error{
     background:#f8d7da;
     color:#842029;
+    border:1px solid #f5c2c7;
     padding:10px;
     border-radius:8px;
-    margin-bottom:15px;
+    margin-bottom:20px;
     text-align:center;
 }
 
+@media (max-width:576px){
+
+    .pf-otp-card{
+        padding:25px;
+    }
+
+    .pf-otp-title{
+        font-size:24px;
+    }
+
+}
 

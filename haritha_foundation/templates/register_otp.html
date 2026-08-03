@@ -5,37 +5,36 @@
 
 {% block content %}
 
-<div class="registerotp-wrapper">
+<div class="pf-otp-container">
 
-    <div class="registerotp-box">
+    <div class="pf-otp-card">
 
-        <h2 class="registerotp-title">Email Verification</h2>
+        <h2 class="pf-otp-title">Email Verification</h2>
 
-        <p class="registerotp-text">
+        <p class="pf-otp-text">
             A 6-digit OTP has been sent to your email address.
             Please enter it below to complete your registration.
         </p>
 
         {% if error %}
-        <div class="registerotp-error">
+        <div class="pf-otp-error">
             {{ error }}
         </div>
         {% endif %}
 
         <form method="POST">
-
             {% csrf_token %}
 
-            <div class="registerotp-group">
+            <div class="pf-otp-group">
 
-                <label class="registerotp-label">
+                <label class="pf-otp-label">
                     Enter OTP
                 </label>
 
                 <input
                     type="text"
                     name="otp"
-                    class="registerotp-input"
+                    class="pf-otp-input"
                     maxlength="6"
                     minlength="6"
                     placeholder="Enter 6-digit OTP"
@@ -44,7 +43,7 @@
 
             </div>
 
-            <button type="submit" class="registerotp-button">
+            <button type="submit" class="pf-otp-btn">
                 Verify & Create Account
             </button>
 
