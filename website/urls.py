@@ -15,6 +15,7 @@ urlpatterns=[
     path('reset-password/',reset_password,name='reset_password'),
     path('logout/',logout_view,name='logout'),
     path('gallery/',gallery,name='gallery'),
+    path('register-otp/',register_otp,name='register_otp'),
     path('payment-success/',payment_success,name='payment_success')
     
 ]

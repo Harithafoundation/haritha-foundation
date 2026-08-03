@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Register OTP{% endblock %}
+
+{% block content %}
+
+<div class="registerotp-wrapper">
+
+    <div class="registerotp-box">
+
+        <h2 class="registerotp-title">Email Verification</h2>
+
+        <p class="registerotp-text">
+            A 6-digit OTP has been sent to your email address.
+            Please enter it below to complete your registration.
+        </p>
+
+        {% if error %}
+        <div class="registerotp-error">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="registerotp-group">
+
+                <label class="registerotp-label">
+                    Enter OTP
+                </label>
+
+                <input
+                    type="text"
+                    name="otp"
+                    class="registerotp-input"
+                    maxlength="6"
+                    minlength="6"
+                    placeholder="Enter 6-digit OTP"
+                    required
+                >
+
+            </div>
+
+            <button type="submit" class="registerotp-button">
+                Verify & Create Account
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from accounts.models import *
 from core.models import *
-import os
+import os,random
 from .utils import create_receipt
 import razorpay
 from django.conf import settings
@@ -71,36 +71,74 @@ def register(request):
         password2 = request.POST.get("password2")
 
         if password1 != password2:
-            return render(
-                request,
-                "register.html",
-                {"error": "Passwords do not match"}
-            )
+            return render(request, "register.html", {
+                "error": "Passwords do not match"
+            })
 
         if User.objects.filter(username=username).exists():
-            return render(
-                request,
-                "register.html",
-                {"error": "Username already exists"}
-            )
+            return render(request, "register.html", {
+                "error": "Username already exists"
+            })
 
-        user = User.objects.create_user(
-            username=username,
-            email=email,
-            password=password1
+        if User.objects.filter(email=email).exists():
+            return render(request, "register.html", {
+                "error": "Email already exists"
+            })
+
+        otp = str(random.randint(100000, 999999))
+
+        request.session["username"] = username
+        request.session["email"] = email
+        request.session["password"] = password1
+        request.session["otp"] = otp
+
+        send_mail(
+            subject="Haritha Foundation OTP Verification",
+            message=f"Your OTP is {otp}",
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[email],
+            fail_silently=False,
         )
 
-        Student.objects.create(
-            user=user,
-            education="Not Provided",
-            college_name="Not Provided",
-            graduation_year=0,
-            interested_domain="General"
-        )
-
-        return redirect("/login/")
+        return redirect("register_otp")
 
     return render(request, "register.html")
+
+def register_otp(request):
+
+    if request.method == "POST":
+
+        entered_otp = request.POST.get("otp")
+
+        if entered_otp == request.session.get("otp"):
+
+            username = request.session.get("username")
+            email = request.session.get("email")
+            password = request.session.get("password")
+
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                password=password
+            )
+
+            Student.objects.create(
+                user=user,
+                education="Not Provided",
+                college_name="Not Provided",
+                graduation_year=0,
+                interested_domain="General"
+            )
+
+            request.session.flush()
+
+            return redirect("/login/")
+
+        return render(request, "register_otp.html", {
+            "error": "Invalid OTP"
+        })
+
+    return render(request, "register_otp.html")
 
 def login_view(request):
     if request.method=='POST':
