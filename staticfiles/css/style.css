@@ -3835,7 +3835,75 @@ input[type="file"]{
         font-size: 14px;
     }
 }
-/* tha above one is login page
+/* tha above one is login page*/
 
+.registerotp-box{
+    width:100%;
+    max-width:420px;
+    background:#ffffff;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.15);
+}
+
+.registerotp-title{
+    text-align:center;
+    margin-bottom:15px;
+    color:#222;
+}
+
+.registerotp-text{
+    text-align:center;
+    color:#666;
+    margin-bottom:20px;
+    line-height:1.6;
+}
+
+.registerotp-group{
+    margin-bottom:20px;
+}
+
+.registerotp-label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:600;
+}
+
+.registerotp-input{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:16px;
+    outline:none;
+}
+
+.registerotp-input:focus{
+    border-color:#28a745;
+}
+
+.registerotp-button{
+    width:100%;
+    padding:12px;
+    background:#28a745;
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.registerotp-button:hover{
+    background:#218838;
+}
+
+.registerotp-error{
+    background:#f8d7da;
+    color:#842029;
+    padding:10px;
+    border-radius:8px;
+    margin-bottom:15px;
+    text-align:center;
+}
 
 

@@ -3844,6 +3844,7 @@ input[type="file"]{
     padding:30px;
     border-radius:12px;
     box-shadow:0 10px 25px rgba(0,0,0,0.15);
+    text-align: center;
 }
 
 .registerotp-title{
